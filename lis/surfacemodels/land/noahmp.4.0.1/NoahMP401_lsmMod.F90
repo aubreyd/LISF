@@ -293,6 +293,11 @@ contains
                 NOAHMP401_struc(n)%noahmp401(t)%wind_e = 0.0
                 NOAHMP401_struc(n)%noahmp401(t)%wind_n = 0.0
                 NOAHMP401_struc(n)%noahmp401(t)%sfcheadrt = 0.0
+                ! WRF-Hydro water temperature exports (set each time step;
+                ! these only matter if exported before the first step)
+                NOAHMP401_struc(n)%noahmp401(t)%infxs1rt_temp = 273.15
+                NOAHMP401_struc(n)%noahmp401(t)%tair_cpl = 273.15
+                NOAHMP401_struc(n)%noahmp401(t)%swdown_cpl = 0.0
 
                 !ag(05Jan2021)
                 NOAHMP401_struc(n)%noahmp401(t)%rivsto = 0.0

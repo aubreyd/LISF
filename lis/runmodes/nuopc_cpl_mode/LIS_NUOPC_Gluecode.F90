@@ -181,7 +181,7 @@ module LIS_NUOPC_Gluecode
     type(LIS_FieldHookup), allocatable :: hookup(:)
   end type
 
-  type(LIS_Field),dimension(83)  :: LIS_FieldList = (/ &
+  type(LIS_Field),dimension(86)  :: LIS_FieldList = (/ &
     LIS_Field(stdName='2m_air_temperature', &
       stateName='t2_f', &
       ampValue=1.d0, meanValue=0.d0, &
@@ -493,6 +493,18 @@ module LIS_NUOPC_Gluecode
       stateName='soldrain', &
       ampValue=1.d0, meanValue=0.d0, &
       units='mm',transferOffer='will provide'), &
+   LIS_Field(stdName='temperature_of_infiltration_excess', &
+      stateName='infxsrttemp', &
+      ampValue=1.d0, meanValue=0.d0, &
+      units='K',transferOffer='will provide'), &
+   LIS_Field(stdName='lsm_forcing_air_temperature', &
+      stateName='tair_cpl', &
+      ampValue=1.d0, meanValue=0.d0, &
+      units='K',transferOffer='will provide'), &
+   LIS_Field(stdName='lsm_forcing_downward_shortwave', &
+      stateName='swdown_cpl', &
+      ampValue=1.d0, meanValue=0.d0, &
+      units='W m-2',transferOffer='will provide'), &
    LIS_Field(stdName='final_potential_evaporation', &
       stateName='etp', &
       ampValue=1.d0, meanValue=0.d0, &
@@ -1477,6 +1489,19 @@ contains
           LIS_FieldList(fIndex)%adExport=.TRUE.
           LIS_FieldList(fIndex)%hookup(nIndex)%exportArray=>LISWRF_export(nIndex)%soldrain
           LIS_FieldList(fIndex)%hookup(nIndex)%exportArray_t=>LISWRF_export(nIndex)%soldrain_t
+        ! WRF-Hydro water temperature model inputs
+        case ('temperature_of_infiltration_excess')
+          LIS_FieldList(fIndex)%adExport=.TRUE.
+          LIS_FieldList(fIndex)%hookup(nIndex)%exportArray=>LISWRF_export(nIndex)%infxsrttemp
+          LIS_FieldList(fIndex)%hookup(nIndex)%exportArray_t=>LISWRF_export(nIndex)%infxsrttemp_t
+        case ('lsm_forcing_air_temperature')
+          LIS_FieldList(fIndex)%adExport=.TRUE.
+          LIS_FieldList(fIndex)%hookup(nIndex)%exportArray=>LISWRF_export(nIndex)%tair_cpl
+          LIS_FieldList(fIndex)%hookup(nIndex)%exportArray_t=>LISWRF_export(nIndex)%tair_cpl_t
+        case ('lsm_forcing_downward_shortwave')
+          LIS_FieldList(fIndex)%adExport=.TRUE.
+          LIS_FieldList(fIndex)%hookup(nIndex)%exportArray=>LISWRF_export(nIndex)%swdown_cpl
+          LIS_FieldList(fIndex)%hookup(nIndex)%exportArray_t=>LISWRF_export(nIndex)%swdown_cpl_t
 #endif
 #ifdef PARFLOW
         case ('total_water_flux_layer_1')              ! (?)

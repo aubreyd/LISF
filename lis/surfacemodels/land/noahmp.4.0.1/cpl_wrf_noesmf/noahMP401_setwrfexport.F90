@@ -22,6 +22,8 @@
 !   if WRF_HYDRO
 !    infiltration excess (infxsrt)
 !    soil drainage (soldrain)
+!    surface runoff temperature, air temperature and downward shortwave
+!      (for the WRF-Hydro water temperature model)
 !
 ! !REVISION HISTORY:
 ! 02 Dec 2003; Sujay Kumar, Initial Version
@@ -57,6 +59,15 @@ subroutine noahMP401_setwrfexport(n)
   ! soil drainage
   call LIS_patch2tile(n,LIS_rc%lsm_index,LISWRF_export(n)%soldrain_t,&
        NOAHMP401_struc(n)%noahmp401%soldrain1rt)
+  ! WRF-Hydro water temperature model inputs:
+  ! surface runoff (infiltration excess) temperature [K]
+  call LIS_patch2tile(n,LIS_rc%lsm_index,LISWRF_export(n)%infxsrttemp_t,&
+       NOAHMP401_struc(n)%noahmp401%infxs1rt_temp)
+  ! air temperature [K] and downward shortwave [W m-2] used in the time step
+  call LIS_patch2tile(n,LIS_rc%lsm_index,LISWRF_export(n)%tair_cpl_t,&
+       NOAHMP401_struc(n)%noahmp401%tair_cpl)
+  call LIS_patch2tile(n,LIS_rc%lsm_index,LISWRF_export(n)%swdown_cpl_t,&
+       NOAHMP401_struc(n)%noahmp401%swdown_cpl)
 #endif
   ! soil moisture content layers 1:4
   do i=1,LIS_rc%npatch(n,LIS_rc%lsm_index)

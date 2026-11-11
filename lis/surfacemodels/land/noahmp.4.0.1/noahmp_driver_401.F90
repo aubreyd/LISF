@@ -54,6 +54,7 @@ subroutine noahmp_driver_401(n, ttile, itimestep, &
      rivsto, fldsto, fldfrc,&
      parameters ,                                                & ! out Noah MP only
      sfcheadrt , INFXSRT, soldrain                               & ! For WRF-Hydro
+     , infxsrt_temp                                              & ! For WRF-Hydro water temperature
 #ifdef PARFLOW
      ,qinsur, etrani                                             & ! out Noah MP only
 #endif
@@ -317,6 +318,7 @@ subroutine noahmp_driver_401(n, ttile, itimestep, &
   real    :: lwdn
   real    :: sfcprs(2)            ! multiple layer is required 
   real, dimension(1,1) :: sfcheadrt,INFXSRT,soldrain ! For WRF-Hydro
+  real, dimension(1,1) :: infxsrt_temp               ! For WRF-Hydro water temperature: surface runoff temperature [K]
   real    :: dz8w3d(2) 
   real, allocatable, dimension(:) :: zsoil
   real, allocatable, dimension(:) :: zsnso
@@ -800,6 +802,7 @@ subroutine noahmp_driver_401(n, ttile, itimestep, &
        rivstoin,fldstoin,fldfrcin,                                 &
 #ifdef WRF_HYDRO
        sfcheadrt, INFXSRT, soldrain,                               &
+       infxsrt_temp,                                               &
 #endif
 #ifdef PARFLOW
        qinsurout, etraniout,                                       &
@@ -932,6 +935,7 @@ subroutine noahmp_driver_401(n, ttile, itimestep, &
 #ifndef WRF_HYDRO
   INFXSRT  = 0.0
   soldrain = 0.0
+  infxsrt_temp = 0.0
 #endif
 #ifdef PARFLOW
   qinsur = qinsurout(1,1)

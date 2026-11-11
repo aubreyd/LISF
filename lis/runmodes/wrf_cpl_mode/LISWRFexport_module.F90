@@ -66,6 +66,11 @@ module LISWRFexport_module
 #ifdef WRF_HYDRO
      real, allocatable :: infxsrt(:,:)
      real, allocatable :: soldrain(:,:)
+     ! WRF-Hydro water temperature: surface runoff temperature [K],
+     ! air temperature [K] and downward shortwave [W m-2] used by the LSM
+     real, allocatable :: infxsrttemp(:,:)
+     real, allocatable :: tair_cpl(:,:)
+     real, allocatable :: swdown_cpl(:,:)
 #endif
 #ifdef PARFLOW
      real, allocatable :: wtrflx1(:,:)
@@ -116,6 +121,9 @@ module LISWRFexport_module
 #ifdef WRF_HYDRO
      real, allocatable :: infxsrt_t(:)
      real, allocatable :: soldrain_t(:)
+     real, allocatable :: infxsrttemp_t(:)
+     real, allocatable :: tair_cpl_t(:)
+     real, allocatable :: swdown_cpl_t(:)
 #endif
 #ifdef PARFLOW
      real, allocatable :: wtrflx1_t(:)

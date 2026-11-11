@@ -245,6 +245,7 @@ subroutine NoahMP401_main(n)
     real, dimension(1,1) :: tmp_sfcheadrt          ! extra input  for WRF-HYDRO [m]
     real, dimension(1,1) :: tmp_infxs1rt           ! extra output for WRF-HYDRO [m]
     real, dimension(1,1) :: tmp_soldrain1rt        ! extra output for WRF-HYDRO [m]
+    real, dimension(1,1) :: tmp_infxs1rt_temp      ! extra output for WRF-HYDRO water temperature [K]
 #ifdef PARFLOW
     real                 :: tmp_qinsur             ! water input on soil surface [m/s]
     real,allocatable     :: tmp_etrani(:)          ! evapotranspiration from soil layers [mm s-1]
@@ -765,7 +766,8 @@ subroutine NoahMP401_main(n)
                                    NOAHMP401_struc(n)%noahmp401(t)%param, & ! out   - relative soil moisture [-]
                                    tmp_sfcheadrt         , & 
                                    tmp_infxs1rt          , &
-                                   tmp_soldrain1rt         & ! out   - extra output for WRF-HYDRO [m]
+                                   tmp_soldrain1rt       , & ! out   - extra output for WRF-HYDRO [m]
+                                   tmp_infxs1rt_temp       & ! out   - surface runoff temperature for WRF-HYDRO [K]
 #ifdef PARFLOW
                                    ,tmp_qinsur             & ! out  - water input on soil surface [m/s]
                                    ,tmp_etrani             & ! out  - evapotranspiration from soil layers [mm s-1]
@@ -884,6 +886,10 @@ subroutine NoahMP401_main(n)
             NOAHMP401_struc(n)%noahmp401(t)%chb2      = tmp_chb2
             NOAHMP401_struc(n)%noahmp401(t)%infxs1rt  = tmp_infxs1rt(1,1)
             NOAHMP401_struc(n)%noahmp401(t)%soldrain1rt  = tmp_soldrain1rt(1,1)
+            ! for the WRF-Hydro water temperature model
+            NOAHMP401_struc(n)%noahmp401(t)%infxs1rt_temp = tmp_infxs1rt_temp(1,1)
+            NOAHMP401_struc(n)%noahmp401(t)%tair_cpl      = tmp_tair
+            NOAHMP401_struc(n)%noahmp401(t)%swdown_cpl    = tmp_swdown
 #ifdef PARFLOW
             NOAHMP401_struc(n)%noahmp401(t)%wtrflx(1)    = (tmp_qinsur*1000.0) &
               - ((tmp_edir + tmp_etrani(1)))

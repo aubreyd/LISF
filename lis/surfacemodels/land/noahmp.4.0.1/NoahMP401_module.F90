@@ -519,6 +519,10 @@ module NoahMP401_module
 	real               :: sfcheadrt
 	real               :: infxs1rt
 	real               :: soldrain1rt
+        ! For the WRF-Hydro water temperature model
+        real               :: infxs1rt_temp  ! surface runoff temperature [K]
+        real               :: tair_cpl       ! air temperature used in the last time step [K]
+        real               :: swdown_cpl     ! downward shortwave used in the last time step [W m-2]
 #ifdef PARFLOW
         real, pointer      :: wtrflx(:)
 #endif

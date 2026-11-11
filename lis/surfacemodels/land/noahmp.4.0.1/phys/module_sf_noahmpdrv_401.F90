@@ -53,6 +53,7 @@ CONTAINS
               rivstoxy,fldstoxy,fldfrcxy,                                   &
 #ifdef WRF_HYDRO
                sfcheadrt,INFXSRT,soldrain,                                  &
+               INFXSRT_TEMP,                                                &
 #endif
 #ifdef PARFLOW
                QINSUR,ETRANI,                                               & ! out :
@@ -153,6 +154,7 @@ CONTAINS
 
 #ifdef WRF_HYDRO
     REAL,    DIMENSION( ims:ime,          jms:jme ), INTENT(INOUT) ::  sfcheadrt,INFXSRT,soldrain   ! for WRF-Hydro
+    REAL,    DIMENSION( ims:ime,          jms:jme ), INTENT(INOUT) ::  INFXSRT_TEMP ! WRF-Hydro water temperature: surface runoff temperature [K]
 #endif
 #ifdef PARFLOW
     REAL,    DIMENSION( ims:ime,          jms:jme ), INTENT(OUT) :: QINSUR ! water input on soil surface [m/s]
@@ -942,6 +944,17 @@ CONTAINS
 !           This will crash channel routing, so only pass along positive runoff.
             soldrain(i,j) = max(RUNSB*dt, 0.)        !mm , underground runoff
             INFXSRT(i,j) = RUNSF*dt        !mm , surface runoff
+            ! Surface runoff temperature for the WRF-Hydro water temperature model,
+            ! as in WRF-Hydro's Noah-MP (water_temperature branch): 0 C under snow,
+            ! else ground temperature.  Like there, this uses the start-of-step
+            ! SNOWH and TGXY (the arrays are updated from SNDPTH and TG below).
+            ! The drainage temperature (bottom-layer soil temperature) is not
+            ! computed here; WRF-Hydro takes it from the exported soil temperature.
+            if (SNOWH(i,j) .gt. 0.0) then
+               INFXSRT_TEMP(i,j) = 273.15
+            else
+               INFXSRT_TEMP(i,j) = TGXY(i,j)
+            endif
 #endif
 
 

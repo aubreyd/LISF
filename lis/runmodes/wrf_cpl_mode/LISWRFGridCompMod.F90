@@ -114,6 +114,9 @@ module LISWRFGridCompMod
 #ifdef WRF_HYDRO
          allocate(LISWRF_export(n)%infxsrt(LIS_rc%lnc(n),LIS_rc%lnr(n)))
          allocate(LISWRF_export(n)%soldrain(LIS_rc%lnc(n),LIS_rc%lnr(n)))
+         allocate(LISWRF_export(n)%infxsrttemp(LIS_rc%lnc(n),LIS_rc%lnr(n)))
+         allocate(LISWRF_export(n)%tair_cpl(LIS_rc%lnc(n),LIS_rc%lnr(n)))
+         allocate(LISWRF_export(n)%swdown_cpl(LIS_rc%lnc(n),LIS_rc%lnr(n)))
 #endif
 #ifdef PARFLOW
          allocate(LISWRF_export(n)%wtrflx1(LIS_rc%lnc(n),LIS_rc%lnr(n)))
@@ -165,6 +168,9 @@ module LISWRFGridCompMod
 #ifdef WRF_HYDRO
          allocate(LISWRF_export(n)%infxsrt_t(LIS_rc%ntiles(n)))
          allocate(LISWRF_export(n)%soldrain_t(LIS_rc%ntiles(n)))
+         allocate(LISWRF_export(n)%infxsrttemp_t(LIS_rc%ntiles(n)))
+         allocate(LISWRF_export(n)%tair_cpl_t(LIS_rc%ntiles(n)))
+         allocate(LISWRF_export(n)%swdown_cpl_t(LIS_rc%ntiles(n)))
 #endif
 #ifdef PARFLOW
          allocate(LISWRF_export(n)%wtrflx1_t(LIS_rc%ntiles(n)))
@@ -247,6 +253,9 @@ module LISWRFGridCompMod
 #ifdef WRF_HYDRO
          LISWRF_export(n)%infxsrt = LIS_rc%udef
          LISWRF_export(n)%soldrain = LIS_rc%udef
+         LISWRF_export(n)%infxsrttemp = LIS_rc%udef
+         LISWRF_export(n)%tair_cpl = LIS_rc%udef
+         LISWRF_export(n)%swdown_cpl = LIS_rc%udef
 #endif
 #ifdef PARFLOW
          LISWRF_export(n)%wtrflx1 = LIS_rc%udef
@@ -298,6 +307,9 @@ module LISWRFGridCompMod
 #ifdef WRF_HYDRO
          LISWRF_export(n)%infxsrt_t = LIS_rc%udef
          LISWRF_export(n)%soldrain_t = LIS_rc%udef
+         LISWRF_export(n)%infxsrttemp_t = LIS_rc%udef
+         LISWRF_export(n)%tair_cpl_t = LIS_rc%udef
+         LISWRF_export(n)%swdown_cpl_t = LIS_rc%udef
 #endif
 #ifdef PARFLOW
          LISWRF_export(n)%wtrflx1_t = LIS_rc%udef
