@@ -523,6 +523,11 @@ module NoahMP401_module
         real               :: infxs1rt_temp  ! surface runoff temperature [K]
         real               :: tair_cpl       ! air temperature used in the last time step [K]
         real               :: swdown_cpl     ! downward shortwave used in the last time step [W m-2]
+        real               :: qair_cpl       ! specific humidity used in the last time step [kg kg-1]
+        real               :: psurf_cpl      ! surface pressure used in the last time step [Pa]
+        real               :: wind_cpl       ! wind speed used in the last time step [m s-1]
+        real               :: lwdown_cpl     ! downward longwave used in the last time step [W m-2]
+        real               :: prcp_cpl       ! total precipitation rate used in the last time step [kg m-2 s-1]
 #ifdef PARFLOW
         real, pointer      :: wtrflx(:)
 #endif

@@ -68,6 +68,17 @@ subroutine noahMP401_setwrfexport(n)
        NOAHMP401_struc(n)%noahmp401%tair_cpl)
   call LIS_patch2tile(n,LIS_rc%lsm_index,LISWRF_export(n)%swdown_cpl_t,&
        NOAHMP401_struc(n)%noahmp401%swdown_cpl)
+  ! forcing over lakes for the WRF-Hydro 1-D lake model
+  call LIS_patch2tile(n,LIS_rc%lsm_index,LISWRF_export(n)%qair_cpl_t,&
+       NOAHMP401_struc(n)%noahmp401%qair_cpl)
+  call LIS_patch2tile(n,LIS_rc%lsm_index,LISWRF_export(n)%psurf_cpl_t,&
+       NOAHMP401_struc(n)%noahmp401%psurf_cpl)
+  call LIS_patch2tile(n,LIS_rc%lsm_index,LISWRF_export(n)%wind_cpl_t,&
+       NOAHMP401_struc(n)%noahmp401%wind_cpl)
+  call LIS_patch2tile(n,LIS_rc%lsm_index,LISWRF_export(n)%lwdown_cpl_t,&
+       NOAHMP401_struc(n)%noahmp401%lwdown_cpl)
+  call LIS_patch2tile(n,LIS_rc%lsm_index,LISWRF_export(n)%prcp_cpl_t,&
+       NOAHMP401_struc(n)%noahmp401%prcp_cpl)
 #endif
   ! soil moisture content layers 1:4
   do i=1,LIS_rc%npatch(n,LIS_rc%lsm_index)

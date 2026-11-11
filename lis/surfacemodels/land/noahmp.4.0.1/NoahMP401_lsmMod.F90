@@ -298,6 +298,11 @@ contains
                 NOAHMP401_struc(n)%noahmp401(t)%infxs1rt_temp = 273.15
                 NOAHMP401_struc(n)%noahmp401(t)%tair_cpl = 273.15
                 NOAHMP401_struc(n)%noahmp401(t)%swdown_cpl = 0.0
+                NOAHMP401_struc(n)%noahmp401(t)%qair_cpl = 0.0
+                NOAHMP401_struc(n)%noahmp401(t)%psurf_cpl = 100000.0
+                NOAHMP401_struc(n)%noahmp401(t)%wind_cpl = 0.0
+                NOAHMP401_struc(n)%noahmp401(t)%lwdown_cpl = 0.0
+                NOAHMP401_struc(n)%noahmp401(t)%prcp_cpl = 0.0
 
                 !ag(05Jan2021)
                 NOAHMP401_struc(n)%noahmp401(t)%rivsto = 0.0

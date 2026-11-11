@@ -71,6 +71,11 @@ module LISWRFexport_module
      real, allocatable :: infxsrttemp(:,:)
      real, allocatable :: tair_cpl(:,:)
      real, allocatable :: swdown_cpl(:,:)
+     real, allocatable :: qair_cpl(:,:)
+     real, allocatable :: psurf_cpl(:,:)
+     real, allocatable :: wind_cpl(:,:)
+     real, allocatable :: lwdown_cpl(:,:)
+     real, allocatable :: prcp_cpl(:,:)
 #endif
 #ifdef PARFLOW
      real, allocatable :: wtrflx1(:,:)
@@ -124,6 +129,11 @@ module LISWRFexport_module
      real, allocatable :: infxsrttemp_t(:)
      real, allocatable :: tair_cpl_t(:)
      real, allocatable :: swdown_cpl_t(:)
+     real, allocatable :: qair_cpl_t(:)
+     real, allocatable :: psurf_cpl_t(:)
+     real, allocatable :: wind_cpl_t(:)
+     real, allocatable :: lwdown_cpl_t(:)
+     real, allocatable :: prcp_cpl_t(:)
 #endif
 #ifdef PARFLOW
      real, allocatable :: wtrflx1_t(:)

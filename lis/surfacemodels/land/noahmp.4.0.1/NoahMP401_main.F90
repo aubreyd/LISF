@@ -890,6 +890,11 @@ subroutine NoahMP401_main(n)
             NOAHMP401_struc(n)%noahmp401(t)%infxs1rt_temp = tmp_infxs1rt_temp(1,1)
             NOAHMP401_struc(n)%noahmp401(t)%tair_cpl      = tmp_tair
             NOAHMP401_struc(n)%noahmp401(t)%swdown_cpl    = tmp_swdown
+            NOAHMP401_struc(n)%noahmp401(t)%qair_cpl      = tmp_qair
+            NOAHMP401_struc(n)%noahmp401(t)%psurf_cpl     = tmp_psurf
+            NOAHMP401_struc(n)%noahmp401(t)%wind_cpl      = sqrt(tmp_wind_e**2 + tmp_wind_n**2)
+            NOAHMP401_struc(n)%noahmp401(t)%lwdown_cpl    = tmp_lwdown
+            NOAHMP401_struc(n)%noahmp401(t)%prcp_cpl      = NOAHMP401_struc(n)%noahmp401(t)%prcp / NOAHMP401_struc(n)%forc_count
 #ifdef PARFLOW
             NOAHMP401_struc(n)%noahmp401(t)%wtrflx(1)    = (tmp_qinsur*1000.0) &
               - ((tmp_edir + tmp_etrani(1)))

@@ -117,6 +117,11 @@ module LISWRFGridCompMod
          allocate(LISWRF_export(n)%infxsrttemp(LIS_rc%lnc(n),LIS_rc%lnr(n)))
          allocate(LISWRF_export(n)%tair_cpl(LIS_rc%lnc(n),LIS_rc%lnr(n)))
          allocate(LISWRF_export(n)%swdown_cpl(LIS_rc%lnc(n),LIS_rc%lnr(n)))
+         allocate(LISWRF_export(n)%qair_cpl(LIS_rc%lnc(n),LIS_rc%lnr(n)))
+         allocate(LISWRF_export(n)%psurf_cpl(LIS_rc%lnc(n),LIS_rc%lnr(n)))
+         allocate(LISWRF_export(n)%wind_cpl(LIS_rc%lnc(n),LIS_rc%lnr(n)))
+         allocate(LISWRF_export(n)%lwdown_cpl(LIS_rc%lnc(n),LIS_rc%lnr(n)))
+         allocate(LISWRF_export(n)%prcp_cpl(LIS_rc%lnc(n),LIS_rc%lnr(n)))
 #endif
 #ifdef PARFLOW
          allocate(LISWRF_export(n)%wtrflx1(LIS_rc%lnc(n),LIS_rc%lnr(n)))
@@ -171,6 +176,11 @@ module LISWRFGridCompMod
          allocate(LISWRF_export(n)%infxsrttemp_t(LIS_rc%ntiles(n)))
          allocate(LISWRF_export(n)%tair_cpl_t(LIS_rc%ntiles(n)))
          allocate(LISWRF_export(n)%swdown_cpl_t(LIS_rc%ntiles(n)))
+         allocate(LISWRF_export(n)%qair_cpl_t(LIS_rc%ntiles(n)))
+         allocate(LISWRF_export(n)%psurf_cpl_t(LIS_rc%ntiles(n)))
+         allocate(LISWRF_export(n)%wind_cpl_t(LIS_rc%ntiles(n)))
+         allocate(LISWRF_export(n)%lwdown_cpl_t(LIS_rc%ntiles(n)))
+         allocate(LISWRF_export(n)%prcp_cpl_t(LIS_rc%ntiles(n)))
 #endif
 #ifdef PARFLOW
          allocate(LISWRF_export(n)%wtrflx1_t(LIS_rc%ntiles(n)))
@@ -256,6 +266,11 @@ module LISWRFGridCompMod
          LISWRF_export(n)%infxsrttemp = LIS_rc%udef
          LISWRF_export(n)%tair_cpl = LIS_rc%udef
          LISWRF_export(n)%swdown_cpl = LIS_rc%udef
+         LISWRF_export(n)%qair_cpl = LIS_rc%udef
+         LISWRF_export(n)%psurf_cpl = LIS_rc%udef
+         LISWRF_export(n)%wind_cpl = LIS_rc%udef
+         LISWRF_export(n)%lwdown_cpl = LIS_rc%udef
+         LISWRF_export(n)%prcp_cpl = LIS_rc%udef
 #endif
 #ifdef PARFLOW
          LISWRF_export(n)%wtrflx1 = LIS_rc%udef
@@ -310,6 +325,11 @@ module LISWRFGridCompMod
          LISWRF_export(n)%infxsrttemp_t = LIS_rc%udef
          LISWRF_export(n)%tair_cpl_t = LIS_rc%udef
          LISWRF_export(n)%swdown_cpl_t = LIS_rc%udef
+         LISWRF_export(n)%qair_cpl_t = LIS_rc%udef
+         LISWRF_export(n)%psurf_cpl_t = LIS_rc%udef
+         LISWRF_export(n)%wind_cpl_t = LIS_rc%udef
+         LISWRF_export(n)%lwdown_cpl_t = LIS_rc%udef
+         LISWRF_export(n)%prcp_cpl_t = LIS_rc%udef
 #endif
 #ifdef PARFLOW
          LISWRF_export(n)%wtrflx1_t = LIS_rc%udef

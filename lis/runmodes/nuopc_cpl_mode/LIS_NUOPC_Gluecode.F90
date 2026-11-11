@@ -181,7 +181,7 @@ module LIS_NUOPC_Gluecode
     type(LIS_FieldHookup), allocatable :: hookup(:)
   end type
 
-  type(LIS_Field),dimension(86)  :: LIS_FieldList = (/ &
+  type(LIS_Field),dimension(91)  :: LIS_FieldList = (/ &
     LIS_Field(stdName='2m_air_temperature', &
       stateName='t2_f', &
       ampValue=1.d0, meanValue=0.d0, &
@@ -505,6 +505,26 @@ module LIS_NUOPC_Gluecode
       stateName='swdown_cpl', &
       ampValue=1.d0, meanValue=0.d0, &
       units='W m-2',transferOffer='will provide'), &
+   LIS_Field(stdName='lsm_forcing_specific_humidity', &
+      stateName='qair_cpl', &
+      ampValue=1.d0, meanValue=0.d0, &
+      units='kg kg-1',transferOffer='will provide'), &
+   LIS_Field(stdName='lsm_forcing_surface_pressure', &
+      stateName='psurf_cpl', &
+      ampValue=1.d0, meanValue=0.d0, &
+      units='Pa',transferOffer='will provide'), &
+   LIS_Field(stdName='lsm_forcing_wind_speed', &
+      stateName='wind_cpl', &
+      ampValue=1.d0, meanValue=0.d0, &
+      units='m s-1',transferOffer='will provide'), &
+   LIS_Field(stdName='lsm_forcing_downward_longwave', &
+      stateName='lwdown_cpl', &
+      ampValue=1.d0, meanValue=0.d0, &
+      units='W m-2',transferOffer='will provide'), &
+   LIS_Field(stdName='lsm_forcing_precipitation_rate', &
+      stateName='prcp_cpl', &
+      ampValue=1.d0, meanValue=0.d0, &
+      units='kg m-2 s-1',transferOffer='will provide'), &
    LIS_Field(stdName='final_potential_evaporation', &
       stateName='etp', &
       ampValue=1.d0, meanValue=0.d0, &
@@ -1502,6 +1522,26 @@ contains
           LIS_FieldList(fIndex)%adExport=.TRUE.
           LIS_FieldList(fIndex)%hookup(nIndex)%exportArray=>LISWRF_export(nIndex)%swdown_cpl
           LIS_FieldList(fIndex)%hookup(nIndex)%exportArray_t=>LISWRF_export(nIndex)%swdown_cpl_t
+        case ('lsm_forcing_specific_humidity')
+          LIS_FieldList(fIndex)%adExport=.TRUE.
+          LIS_FieldList(fIndex)%hookup(nIndex)%exportArray=>LISWRF_export(nIndex)%qair_cpl
+          LIS_FieldList(fIndex)%hookup(nIndex)%exportArray_t=>LISWRF_export(nIndex)%qair_cpl_t
+        case ('lsm_forcing_surface_pressure')
+          LIS_FieldList(fIndex)%adExport=.TRUE.
+          LIS_FieldList(fIndex)%hookup(nIndex)%exportArray=>LISWRF_export(nIndex)%psurf_cpl
+          LIS_FieldList(fIndex)%hookup(nIndex)%exportArray_t=>LISWRF_export(nIndex)%psurf_cpl_t
+        case ('lsm_forcing_wind_speed')
+          LIS_FieldList(fIndex)%adExport=.TRUE.
+          LIS_FieldList(fIndex)%hookup(nIndex)%exportArray=>LISWRF_export(nIndex)%wind_cpl
+          LIS_FieldList(fIndex)%hookup(nIndex)%exportArray_t=>LISWRF_export(nIndex)%wind_cpl_t
+        case ('lsm_forcing_downward_longwave')
+          LIS_FieldList(fIndex)%adExport=.TRUE.
+          LIS_FieldList(fIndex)%hookup(nIndex)%exportArray=>LISWRF_export(nIndex)%lwdown_cpl
+          LIS_FieldList(fIndex)%hookup(nIndex)%exportArray_t=>LISWRF_export(nIndex)%lwdown_cpl_t
+        case ('lsm_forcing_precipitation_rate')
+          LIS_FieldList(fIndex)%adExport=.TRUE.
+          LIS_FieldList(fIndex)%hookup(nIndex)%exportArray=>LISWRF_export(nIndex)%prcp_cpl
+          LIS_FieldList(fIndex)%hookup(nIndex)%exportArray_t=>LISWRF_export(nIndex)%prcp_cpl_t
 #endif
 #ifdef PARFLOW
         case ('total_water_flux_layer_1')              ! (?)
@@ -1783,6 +1823,49 @@ contains
               field=exportField,nest=nest,fillVal=0.0,rc=rc)
             if(ESMF_STDERRORCHECK(rc)) return
           elseif (LIS_FieldList(fIndex)%stateName .eq. "soldrain") then
+            call LIS_CopyFromLIS( &
+              farrayLIS=LIS_FieldList(fIndex)%hookup(nest)%exportArray_t, &
+              field=exportField,nest=nest,fillVal=0.0,rc=rc)
+            if(ESMF_STDERRORCHECK(rc)) return
+          ! WRF-Hydro water temperature and 1-D lake model inputs: a physical
+          ! fill value on cells LIS does not model (water), so that bilinear
+          ! regridding next to them is not contaminated by the missing value
+          elseif (LIS_FieldList(fIndex)%stateName .eq. "infxsrttemp") then
+            call LIS_CopyFromLIS( &
+              farrayLIS=LIS_FieldList(fIndex)%hookup(nest)%exportArray_t, &
+              field=exportField,nest=nest,fillVal=273.15,rc=rc)
+            if(ESMF_STDERRORCHECK(rc)) return
+          elseif (LIS_FieldList(fIndex)%stateName .eq. "tair_cpl") then
+            call LIS_CopyFromLIS( &
+              farrayLIS=LIS_FieldList(fIndex)%hookup(nest)%exportArray_t, &
+              field=exportField,nest=nest,fillVal=273.15,rc=rc)
+            if(ESMF_STDERRORCHECK(rc)) return
+          elseif (LIS_FieldList(fIndex)%stateName .eq. "swdown_cpl") then
+            call LIS_CopyFromLIS( &
+              farrayLIS=LIS_FieldList(fIndex)%hookup(nest)%exportArray_t, &
+              field=exportField,nest=nest,fillVal=0.0,rc=rc)
+            if(ESMF_STDERRORCHECK(rc)) return
+          elseif (LIS_FieldList(fIndex)%stateName .eq. "qair_cpl") then
+            call LIS_CopyFromLIS( &
+              farrayLIS=LIS_FieldList(fIndex)%hookup(nest)%exportArray_t, &
+              field=exportField,nest=nest,fillVal=0.0,rc=rc)
+            if(ESMF_STDERRORCHECK(rc)) return
+          elseif (LIS_FieldList(fIndex)%stateName .eq. "psurf_cpl") then
+            call LIS_CopyFromLIS( &
+              farrayLIS=LIS_FieldList(fIndex)%hookup(nest)%exportArray_t, &
+              field=exportField,nest=nest,fillVal=100000.0,rc=rc)
+            if(ESMF_STDERRORCHECK(rc)) return
+          elseif (LIS_FieldList(fIndex)%stateName .eq. "wind_cpl") then
+            call LIS_CopyFromLIS( &
+              farrayLIS=LIS_FieldList(fIndex)%hookup(nest)%exportArray_t, &
+              field=exportField,nest=nest,fillVal=0.0,rc=rc)
+            if(ESMF_STDERRORCHECK(rc)) return
+          elseif (LIS_FieldList(fIndex)%stateName .eq. "lwdown_cpl") then
+            call LIS_CopyFromLIS( &
+              farrayLIS=LIS_FieldList(fIndex)%hookup(nest)%exportArray_t, &
+              field=exportField,nest=nest,fillVal=0.0,rc=rc)
+            if(ESMF_STDERRORCHECK(rc)) return
+          elseif (LIS_FieldList(fIndex)%stateName .eq. "prcp_cpl") then
             call LIS_CopyFromLIS( &
               farrayLIS=LIS_FieldList(fIndex)%hookup(nest)%exportArray_t, &
               field=exportField,nest=nest,fillVal=0.0,rc=rc)
