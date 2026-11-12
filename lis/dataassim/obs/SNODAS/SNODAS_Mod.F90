@@ -40,6 +40,7 @@ module SNODAS_Mod
   type, public:: SNODAS_dec
      
      logical                :: startMode
+     integer                :: assim_hour   ! hour (UTC) of the daily assimilation
      integer                :: nc
      integer                :: nr
 
@@ -90,6 +91,7 @@ contains
 !EOP
 
     integer                ::  n,i,t,kk,c,r
+    integer, allocatable   ::  assim_hour(:)
     real, allocatable          ::  obserr(:,:)
     integer                ::  ftn
     integer                ::  status
@@ -134,6 +136,22 @@ contains
             snodasobsdir, rc=status)
        call LIS_verify(status)
     enddo
+
+    ! Optional: hour (UTC) at which the daily SNODAS analysis is assimilated.
+    ! SNODAS products are valid at 06Z; the default 0 keeps the behavior of
+    ! earlier versions (assimilation at 00Z).
+    allocate(assim_hour(LIS_rc%nnest))
+    assim_hour = 0
+    call ESMF_ConfigFindLabel(LIS_config,"SNODAS assimilation hour (UTC):",&
+         rc=status)
+    if (status == 0) then
+       do n=1,LIS_rc%nnest
+          call ESMF_ConfigGetAttribute(LIS_config,assim_hour(n),rc=status)
+          call LIS_verify(status, 'SNODAS assimilation hour (UTC): one value per nest')
+          if (assim_hour(n) < 0 .or. assim_hour(n) > 23) &
+               call LIS_verify(1, 'SNODAS assimilation hour (UTC): must be 0..23')
+       enddo
+    endif
     
     do n=1,LIS_rc%nnest
        call ESMF_AttributeSet(OBS_State(n),"Data Update Status",&
@@ -302,8 +320,14 @@ contains
             SNODAS_struc(n)%n11)
        
 
+       ! daily alarm at assim_hour UTC: alarms ring when (seconds since 00Z +
+       ! alarm_offset) is a multiple of the interval
+       SNODAS_struc(n)%assim_hour = assim_hour(n)
        call LIS_registerAlarm("SNODAS read alarm",&
-            86400.0, 86400.0)
+            86400.0, 86400.0, &
+            alarm_offset=mod(86400 - 3600*assim_hour(n), 86400))
+       write(LIS_logunit,*) '[INFO] SNODAS snow depth assimilated daily at ', &
+            assim_hour(n), 'Z'
        SNODAS_struc(n)%startMode = .true. 
 
        call ESMF_StateAdd(OBS_State(n),(/obsField(n)/),rc=status)

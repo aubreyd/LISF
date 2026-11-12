@@ -3366,9 +3366,15 @@ THySM soil moisture number of bins in the CDF: 100
 `SNODAS data directory:` specifies the directory for the
 SNODAS data.
 
+`SNODAS assimilation hour (UTC):` (optional) specifies the hour,
+0 to 23, at which the daily SNODAS snow depth analysis is
+assimilated, one value per nest. SNODAS analyses are valid at 06Z.
+Defaults to 0 (00Z), the behavior of earlier versions.
+
 .Example _lis.config_ entry
 ....
 SNODAS snow depth data directory:                  ./FORCING/SNODAS
+SNODAS assimilation hour (UTC):                    6
 ....
 
 [[ssec_rtms,Radiative Transfer/Forward Models]]
